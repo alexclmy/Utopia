@@ -1,0 +1,20 @@
+{
+  "name": "utopia",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The world's best city, built by everyone.",
+  "packageManager": "pnpm@10.17.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "start": "pnpm --filter @utopia/web start",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "typescript": "^5.9.2"
+  }
+}
