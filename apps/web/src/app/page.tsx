@@ -11,7 +11,7 @@ const CityScene = dynamic(() => import("@/components/city-scene").then((module) 
   loading: () => <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,#d6e8d8,#f4f1e8)]" />
 });
 
-type Screen = "visitor" | "signup" | "quiz" | "profile" | "onboarding" | "feed" | "vote" | "submit" | "submitted";
+type Screen = "visitor" | "concept" | "signup" | "quiz" | "profile" | "onboarding" | "feed" | "vote" | "submit" | "submitted";
 
 type QuizAnswer = {
   question: string;
@@ -72,9 +72,11 @@ function TopNav({ screen, setScreen }: { screen: Screen; setScreen: (screen: Scr
       <Logo />
       <nav className="hidden items-center gap-2 rounded-2xl bg-[#fbf9f2]/80 p-2 shadow-soft backdrop-blur md:flex">
         <button className="rounded-xl px-4 py-2 text-sm font-bold text-[#5a6b5e] transition hover:bg-white" onClick={() => setScreen("visitor")}>Explore</button>
+        <button className="rounded-xl px-4 py-2 text-sm font-bold text-[#5a6b5e] transition hover:bg-white" onClick={() => setScreen("concept")}>Concept</button>
         <button className="rounded-xl px-4 py-2 text-sm font-bold text-[#5a6b5e] transition hover:bg-white" onClick={() => setScreen("feed")}>Feed</button>
         <button className="rounded-xl px-4 py-2 text-sm font-bold text-[#5a6b5e] transition hover:bg-white" onClick={() => setScreen("submit")}>Share observation</button>
       </nav>
+      <button className="rounded-2xl bg-[#fbf9f2]/80 px-4 py-3 text-sm font-bold text-[#1b5e43] shadow-soft backdrop-blur md:hidden" onClick={() => setScreen("concept")}>Concept</button>
       {screen === "visitor" ? <PrimaryButton onClick={() => setScreen("signup")}>Join</PrimaryButton> : null}
     </header>
   );
@@ -106,6 +108,80 @@ function VisitorHero({ decisions, onJoin, onWalk }: { decisions: Decision[]; onJ
         <button className="rounded-2xl bg-[#1b5e43] px-4 py-2 font-display font-semibold text-white" onClick={onJoin}>Add yours</button>
       </div>
     </div>
+  );
+}
+
+function ConceptExplainer({ onJoin, onExplore }: { onJoin: () => void; onExplore: () => void }) {
+  const loop = [
+    { step: "01", title: "Spot a brilliant city idea", body: "A shaded arcade in Bologna, a quiet street in Tokyo, a bike-first crossing in Amsterdam. If it makes urban life better, it belongs here." },
+    { step: "02", title: "Turn it into a decision", body: "The community frames the idea clearly: what changes, who benefits, what it costs, and what trade-off we accept." },
+    { step: "03", title: "Vote with context", body: "No vague likes. Each decision shows arguments, sources, impact layers and a simple yes/no/abstain vote." },
+    { step: "04", title: "Watch the city evolve", body: "Adopted decisions become visible in the 3D city, so Utopia slowly turns into a playable manifesto for better places." }
+  ];
+
+  const layers = ["🚶 Walkability", "🌳 Nature", "🏘️ Housing", "🚲 Mobility", "🎭 Culture", "🤝 Community"];
+
+  return (
+    <main id="concept" className="pointer-events-auto absolute inset-x-4 bottom-4 top-20 z-20 overflow-y-auto rounded-[34px] bg-[#fbf9f2]/94 p-5 shadow-panel backdrop-blur md:inset-x-8 md:p-8">
+      <div className="mx-auto max-w-6xl">
+        <button className="mb-5 rounded-2xl bg-white/80 px-4 py-2 text-sm font-bold text-[#5a6b5e] shadow-soft" onClick={onExplore}>← Back to the city</button>
+        <section className="grid gap-8 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#d6e8d8] px-4 py-2 text-sm font-extrabold text-[#1b5e43]">
+              <Sparkles size={16} /> Concept
+            </div>
+            <h1 className="font-display text-5xl font-semibold leading-[0.95] tracking-[-0.04em] text-ink md:text-7xl">
+              A fantasy city made from real-world genius.
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-[#3a443c]">
+              Utopia is a civic game: collect the best ideas from cities around the world, debate them like a community, vote on what deserves to exist, then see the city transform in 3D.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <PrimaryButton onClick={onJoin}>Start as a citizen <ArrowRight className="ml-2 inline" size={17} /></PrimaryButton>
+              <PrimaryButton subtle onClick={onExplore}>Explore the 3D city</PrimaryButton>
+            </div>
+          </div>
+
+          <div className="rounded-[34px] bg-[#143c2c] p-5 text-white shadow-panel">
+            <div className="rounded-[26px] bg-white/10 p-5">
+              <div className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#9fdcb8]">The simple promise</div>
+              <h2 className="mt-2 font-display text-3xl font-semibold">If every city has one magic trick, what happens when we combine them?</h2>
+              <div className="mt-5 grid gap-3">
+                {layers.map((layer) => <span key={layer} className="rounded-2xl bg-white/12 px-4 py-3 font-display font-semibold">{layer}</span>)}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 grid gap-4 md:grid-cols-4">
+          {loop.map((item) => (
+            <article key={item.step} className="rounded-[28px] border border-[#e3dfce] bg-white/72 p-5 shadow-soft">
+              <div className="mb-4 grid size-12 place-items-center rounded-2xl bg-[#1b5e43] font-display text-lg font-semibold text-white">{item.step}</div>
+              <h3 className="font-display text-2xl font-semibold text-ink">{item.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[#4d5b51]">{item.body}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="mt-8 grid gap-4 lg:grid-cols-3">
+          <div className="rounded-[30px] bg-[#eef6ee] p-6">
+            <div className="mb-3 text-3xl">🧭</div>
+            <h3 className="font-display text-2xl font-semibold">For curious citizens</h3>
+            <p className="mt-3 text-sm leading-6 text-[#405047]">Travel, observe, submit. Your city taste becomes a profile that recommends decisions worth voting on.</p>
+          </div>
+          <div className="rounded-[30px] bg-[#fff3df] p-6">
+            <div className="mb-3 text-3xl">🏛️</div>
+            <h3 className="font-display text-2xl font-semibold">For better debates</h3>
+            <p className="mt-3 text-sm leading-6 text-[#405047]">Each idea includes pros, downsides and evidence, so the community can disagree without turning into a comment-section swamp.</p>
+          </div>
+          <div className="rounded-[30px] bg-[#efeaff] p-6">
+            <div className="mb-3 text-3xl">🌆</div>
+            <h3 className="font-display text-2xl font-semibold">For a living prototype</h3>
+            <p className="mt-3 text-sm leading-6 text-[#405047]">The 3D city is the scoreboard. Every adopted decision leaves a visible trace and makes Utopia more specific.</p>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }
 
@@ -341,6 +417,7 @@ export default function Home() {
       </div>
 
       {screen === "visitor" ? <VisitorHero decisions={decisions} onJoin={() => setScreen("signup")} onWalk={() => setPanelDecision(decisions[1])} /> : null}
+      {screen === "concept" ? <ConceptExplainer onJoin={() => setScreen("signup")} onExplore={() => setScreen("visitor")} /> : null}
       {screen === "feed" ? <Feed decisions={decisions} onOpenVote={openVote} onSubmit={() => setScreen("submit")} /> : null}
       {screen === "signup" ? <Signup onBack={() => setScreen("visitor")} onContinue={() => setScreen("quiz")} /> : null}
       {screen === "quiz" ? <Quiz onComplete={(answers) => { setQuizAnswers(answers); setScreen("profile"); }} /> : null}
